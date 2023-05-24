@@ -2,7 +2,7 @@ module login
 
 go 1.20
 
-require github.com/AzureAD/microsoft-authentication-library-for-go v1.0.0
+require github.com/AzureAD/microsoft-authentication-library-for-go v0.8.1
 
 require (
 	github.com/golang-jwt/jwt/v4 v4.4.3 // indirect

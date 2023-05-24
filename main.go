@@ -12,24 +12,20 @@ import (
 type exportReplaceLogger struct {
 }
 
-func (a *exportReplaceLogger) Replace(ctx context.Context, cache cache.Unmarshaler, cacheHints cache.ReplaceHints) error {
+func (a *exportReplaceLogger) Replace(cache cache.Unmarshaler, key string) {
 	pc, _, _, ok := runtime.Caller(1)
 	details := runtime.FuncForPC(pc)
 	if ok && details != nil {
-		log.Printf("Replace(%s): called from %s\n", cacheHints.PartitionKey, details.Name())
+		log.Printf("Replace(%s): called from %s\n", key, details.Name())
 	}
-
-	return nil
 }
 
-func (a *exportReplaceLogger) Export(ctx context.Context, cache cache.Marshaler, cacheHints cache.ExportHints) error {
+func (a *exportReplaceLogger) Export(cache cache.Marshaler, key string) {
 	pc, _, _, ok := runtime.Caller(1)
 	details := runtime.FuncForPC(pc)
 	if ok && details != nil {
-		log.Printf("Export(%s): called from %s\n", cacheHints.PartitionKey, details.Name())
+		log.Printf("Export(%s): called from %s\n", key, details.Name())
 	}
-
-	return nil
 }
 
 func main() {
@@ -52,10 +48,7 @@ func main() {
 		panic(err)
 	}
 
-	acc, err := publicClientApp.Accounts(ctx)
-	if err != nil {
-		panic(err)
-	}
+	acc := publicClientApp.Accounts()
 
 	if len(acc) != 1 {
 		panic("expected 1 account")
